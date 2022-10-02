@@ -1,24 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 
+type PropsType = {
+  userId: number,
+  id: number,
+  title: string,
+  completed: boolean
+}
+
 function App() {
+  const [todos, setTodos] = useState<PropsType[]>([])
+  console.log(todos)
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/todos')
+      .then(response => response.json())
+      .then(json => setTodos(json))
+  }, [])
+
+  const onClickHandler = () => {
+    setTodos([])
+  }
+
+
+
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <ul>
+        {
+          todos.map(el => {
+            return (
+              <li>
+                <span>{el.id}</span>
+                <span>{el.title}</span>
+              </li>
+            )
+          })
+        }
+      </ul>
+      <button onClick={onClickHandler}>Click Here!!!</button>
     </div>
   );
 }
